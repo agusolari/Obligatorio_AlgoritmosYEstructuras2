@@ -80,7 +80,7 @@ public class ImplementacionSistema implements Sistema  {
         Mercaderia mercaderia = new Mercaderia(id, codigo, descripcion, fragil, categoria);
         mercaderiasPorId.insertar(id, mercaderia);
         mercaderiasPorCodigo.insertar(codigo, mercaderia);
-        mercaderiaPorCategoria[categoria.getIndice()].insertar(mercaderia);
+        mercaderiaPorCategoria[categoria.getIndice()].insertarOrdenado(mercaderia);
 
         return Retorno.ok();
     }
@@ -101,30 +101,53 @@ public class ImplementacionSistema implements Sistema  {
 
         return Retorno.ok(resultado.getCantidadRecorridos(), resultado.getDato().toString());
     }
+//    Descripción: Retorna en valorString los datos de todas las mercaderías registradas, ordenadas por
+//    id en forma creciente separados por un |.
+//    Restricción de eficiencia: Esta operación deberá realizarse en orden O(n), siendo n la cantidad
+//    total de mercaderías.
+//    Formato de retorno del valor String:
+//    id1;codigo1;descripcion1;frágil1;categoría1|id2;codigo2;descripci
+//            on2;frágil2;categoría2
+//    Nota: Se debe cumplir que id1 es lexicográficamente menor a id2.
+//    Por ejemplo:
+//            12345;MN-001-ABC123;Batería de cocina;false;Otros|23456;SJ-003-
+//    CDE345;Ropa de invierno;false;Textil
+
 
     @Override
     public Retorno listarMercaderiasPorIdAscendente() {
-        return Retorno.noImplementada();
+        return Retorno.ok(mercaderiasPorId.listarAscendente());
     }
 
     @Override
     public Retorno listarMercaderiasPorIdDescendente() {
-        return Retorno.noImplementada();
+        return Retorno.ok(mercaderiasPorId.listarDescendente());
     }
 
     @Override
     public Retorno buscarMercaderiaPorCodigo(String codigo) {
-        return Retorno.noImplementada();
+
+        if (codigo == null || codigo.isBlank()) {
+            return Retorno.error1("El codigo es vacío o null");
+        }
+
+        RespuestaBusqueda<Mercaderia> resultado = mercaderiasPorCodigo.buscar(codigo);
+
+        if (resultado.getDato() == null) {
+            return Retorno.error2("No existe mercadería con ese codigo");
+        }
+        return Retorno.ok(resultado.getCantidadRecorridos(), resultado.getDato().toString());
     }
 
     @Override
     public Retorno listarMercaderiasPorCodigoAscendente() {
-        return Retorno.noImplementada();
+        return Retorno.ok(mercaderiasPorCodigo.listarAscendente());
     }
 
     @Override
     public Retorno listarMercaderiasPorCategoria(Categoria unaCategoria) {
-        return Retorno.noImplementada();
+
+        return Retorno.ok(mercaderiaPorCategoria[unaCategoria.getIndice()].imprimirDatos());
     }
 
     @Override

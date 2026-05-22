@@ -2,7 +2,7 @@ package dominio;
 
 import interfaz.Categoria;
 
-public class Mercaderia {
+public class Mercaderia implements Comparable<Mercaderia> {
 
     private String id;
     private String codigo;
@@ -42,10 +42,11 @@ public class Mercaderia {
 
     @Override
     public String toString() {
-        return id + ";" +
-                codigo + ";" +
-                descripcion + ";" +
-                fragil + ";" +
-                categoria.getTexto();
+        return id + ";" + codigo + ";" + descripcion + ";" + fragil + ";" + categoria.getTexto();
+    }
+
+    @Override
+    public int compareTo(Mercaderia otra) {
+        return this.id.compareTo(otra.id);
     }
 }

@@ -11,6 +11,6 @@ public interface ILista<T> {
     T recuperar(T dato);
     boolean esVacia();
     boolean esLlena();
-    void imprimirDatos();
+    String imprimirDatos();
     Iterator<T> iterator();
 }

@@ -110,4 +110,54 @@ public class ABB<K extends Comparable<K>, T> {
         return buscar(nodo.der, clave, recorridos);
     }
 
+    public String listarAscendente() {
+
+        StringBuilder sb = new StringBuilder();
+
+        listarAscendente(raiz, sb);
+
+        return sb.toString();
+    }
+
+    private void listarAscendente(NodoABB<K, T> nodo, StringBuilder sb) {
+
+        if (nodo == null) {
+            return;
+        }
+
+        listarAscendente(nodo.izq, sb);
+
+        if (!sb.isEmpty()) {
+            sb.append("|");
+        }
+
+        sb.append(nodo.dato);
+
+        listarAscendente(nodo.der, sb);
+    }
+
+    public String listarDescendente(){
+        StringBuilder sb = new StringBuilder();
+
+        listarDescendente(raiz, sb);
+
+        return sb.toString();
+
+    }
+
+    private void listarDescendente(NodoABB<K, T> nodo, StringBuilder sb){
+        if (nodo == null){
+            return;
+        }
+
+        listarDescendente(nodo.der, sb);
+
+        if(!sb.isEmpty()){
+            sb.append("|");
+        }
+
+        sb.append(nodo.dato);
+
+        listarDescendente(nodo.izq, sb);
+    }
 }

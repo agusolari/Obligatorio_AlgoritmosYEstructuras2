@@ -15,6 +15,60 @@ public class Lista<T> implements ILista<T> {
         this.largo = 0;
     }
 
+    public void insertarAlFinal(T dato) {
+        NodoLista<T> nuevo = new NodoLista<>(dato);
+
+        if (inicio == null) {
+            inicio = nuevo;
+            largo++;
+            return;
+        }
+        NodoLista<T> aux = inicio;
+
+        while (aux.getSig() != null) {
+            aux = aux.getSig();
+        }
+        aux.setSig(nuevo);
+
+        largo++;
+    }
+
+    public void insertarOrdenado(T dato) {
+
+        NodoLista<T> nuevo = new NodoLista<>(dato);
+
+        // lista vacía
+        if (inicio == null) {
+            inicio = nuevo;
+            largo++;
+            return;
+        }
+
+        Comparable<T> comparableDato =
+                (Comparable<T>) dato;
+
+        // insertar al inicio
+        if (comparableDato.compareTo(inicio.getDato()) < 0) {
+            nuevo.setSig(inicio);
+            inicio = nuevo;
+            largo++;
+            return;
+        }
+
+        NodoLista<T> aux = inicio;
+
+        while (aux.getSig() != null &&
+                comparableDato.compareTo(aux.getSig().getDato()) > 0) {
+
+            aux = aux.getSig();
+        }
+
+        nuevo.setSig(aux.getSig());
+        aux.setSig(nuevo);
+
+        largo++;
+    }
+
     @Override
     public void insertar(T dato) {
         inicio = new NodoLista<T>(dato, inicio);
@@ -66,24 +120,19 @@ public class Lista<T> implements ILista<T> {
     }
 
     @Override
-    public void imprimirDatos() {
-        NodoLista<T> aux = inicio;
-        while (aux != null) {
-            if (aux.getSig() != null){
-                System.out.print(aux.getDato() + " -> ");
-            }else{
-                System.out.print(aux.getDato());
-            }
-            aux = aux.getSig();
-        }
-        System.out.println();
+    public String imprimirDatos() {
+        return imprimirDatosV2(inicio);
     }
 
-    public void imprimirDatosV2(NodoLista<T> nodo ) {
-        if (nodo!=null){
-            System.out.println(nodo.getDato());
-            imprimirDatosV2(nodo.getSig());
+    private String imprimirDatosV2(NodoLista<T> nodo) {
+        if (nodo == null) {
+            return "";
         }
+        if (nodo.getSig() == null) {
+            return nodo.getDato().toString();
+        }
+        return nodo.getDato().toString() + "|" +
+                imprimirDatosV2(nodo.getSig());
     }
 
     public Iterator<T> iterator() {
