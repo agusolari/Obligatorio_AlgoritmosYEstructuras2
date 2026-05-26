@@ -12,9 +12,7 @@ public class ImplementacionSistema implements Sistema  {
     private ABB <String, Mercaderia> mercaderiasPorCodigo;
     private Lista <Mercaderia>[] mercaderiaPorCategoria;
 
-    private CentroLogistico[] centros;
-    private int cantidadCentros;
-    private int centrosMax;
+    private Grafo centrosLogisticos;
 
     @Override
     public Retorno inicializarSistema(int maxCentros) {
@@ -32,34 +30,12 @@ public class ImplementacionSistema implements Sistema  {
             mercaderiaPorCategoria[i] = new Lista<>();
         }
 
-        centros = new CentroLogistico[maxCentros];
+        centrosLogisticos = new Grafo(maxCentros);
 
-        this.centrosMax = maxCentros;
-        this.cantidadCentros = 0;
 
         return Retorno.ok();
     }
 
-    //        02 - Registrar Mercadería
-//        Descripción: Registra una mercadería con sus datos, el id y el código son únicos.
-//        Restricción de eficiencia: Esta operación deberá realizarse en orden O(log n) promedio, siendo n
-//        la cantidad total de mercaderías.
-//                Retornos posibles
-//        OK Si La mercadería fue registrada exitosamente.
-//                ERROR 1. Si alguno de los parámetros es vacío o null.
-//        2. Si codigo no tiene el formato válido.
-//        3. Si ya existe una mercadería registrada con ese id.
-//        4. Si ya existe una mercadería registrada con ese codigo.
-//                NO_IMPLEMENTADA Cuando aún no se implementó.
-//    Restricción: (Investigación) Se requiere el uso de expresiones regulares para lograr validar el
-//    formato del código. El formato para validar es: AA-BBB-CCCCCC, donde AA son solo letras, BBB
-//    es un número (3 dígitos) y CCCCCC es alfanumérico (solo letras y números)
-//    Las categorías posibles son:
-//• Electrónica
-//• Alimentos
-//• Documentación
-//• Textil
-//• Otros
 
     @Override
     public Retorno registrarMercaderia(String id, String codigo, String descripcion, boolean fragil, Categoria categoria) {
@@ -101,18 +77,6 @@ public class ImplementacionSistema implements Sistema  {
 
         return Retorno.ok(resultado.getCantidadRecorridos(), resultado.getDato().toString());
     }
-//    Descripción: Retorna en valorString los datos de todas las mercaderías registradas, ordenadas por
-//    id en forma creciente separados por un |.
-//    Restricción de eficiencia: Esta operación deberá realizarse en orden O(n), siendo n la cantidad
-//    total de mercaderías.
-//    Formato de retorno del valor String:
-//    id1;codigo1;descripcion1;frágil1;categoría1|id2;codigo2;descripci
-//            on2;frágil2;categoría2
-//    Nota: Se debe cumplir que id1 es lexicográficamente menor a id2.
-//    Por ejemplo:
-//            12345;MN-001-ABC123;Batería de cocina;false;Otros|23456;SJ-003-
-//    CDE345;Ropa de invierno;false;Textil
-
 
     @Override
     public Retorno listarMercaderiasPorIdAscendente() {
@@ -152,7 +116,21 @@ public class ImplementacionSistema implements Sistema  {
 
     @Override
     public Retorno registrarCentroLogistico(String codigo, String nombre, String departamento, String direccion) {
-        return Retorno.noImplementada();
+
+        if (centrosLogisticos.getCantVertices() >= centrosLogisticos.getCantMaxVertices()){
+            return Retorno.error1("Ya hay la cantidad maximas de centros logisticos registrados.");
+        }
+        if (codigo == null || codigo.isBlank() || nombre == null || nombre.isBlank() || departamento == null || departamento.isBlank() || direccion == null || direccion.isBlank()) {
+            return Retorno.error2("Campos vacios o nulos");
+        }
+
+        CentroLogistico cl = new CentroLogistico (codigo, nombre, departamento, direccion);
+        if (centrosLogisticos.existeCentroLogistico(cl)){
+            return Retorno.error3("Ya existe un centro logistico registrado con ese codigo");
+        }
+        centrosLogisticos.agregarCentroLogistico(cl);
+
+        return Retorno.ok("Se agrego el centro logistico correctamente");
     }
 
     @Override

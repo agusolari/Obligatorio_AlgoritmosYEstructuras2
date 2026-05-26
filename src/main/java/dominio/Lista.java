@@ -44,8 +44,7 @@ public class Lista<T> implements ILista<T> {
             return;
         }
 
-        Comparable<T> comparableDato =
-                (Comparable<T>) dato;
+        Comparable<T> comparableDato = (Comparable<T>) dato;
 
         // insertar al inicio
         if (comparableDato.compareTo(inicio.getDato()) < 0) {
@@ -57,12 +56,10 @@ public class Lista<T> implements ILista<T> {
 
         NodoLista<T> aux = inicio;
 
-        while (aux.getSig() != null &&
-                comparableDato.compareTo(aux.getSig().getDato()) > 0) {
+        while (aux.getSig() != null && comparableDato.compareTo(aux.getSig().getDato()) > 0) {
 
             aux = aux.getSig();
         }
-
         nuevo.setSig(aux.getSig());
         aux.setSig(nuevo);
 
