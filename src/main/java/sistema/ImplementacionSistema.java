@@ -3,9 +3,6 @@ package sistema;
 import dominio.*;
 import interfaz.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ImplementacionSistema implements Sistema  {
 
     private ABB <String, Mercaderia> mercaderiasPorId;
@@ -135,7 +132,27 @@ public class ImplementacionSistema implements Sistema  {
 
     @Override
     public Retorno registrarConexion(String codigoOrigen, String codigoDestino, int distancia, int tiempo) {
-        return Retorno.noImplementada();
+        if (codigoOrigen == null || codigoOrigen.isBlank() || codigoDestino == null || codigoDestino.isBlank()) {
+            return Retorno.error1("Campos vacios o nulos");
+        }
+        if(!centrosLogisticos.existeCentroLogistico(new CentroLogistico(codigoOrigen, "", "", ""))){
+            return Retorno.error2("El centro logístico de origen no existe");
+        }
+        if(!centrosLogisticos.existeCentroLogistico(new CentroLogistico(codigoDestino, "", "", ""))){
+            return Retorno.error3("El centro logístico de destino no existe");
+        }
+
+        if(distancia <= 0)  return Retorno.error4("La distancia debe ser mayor a 0");
+        if (tiempo <= 0) return Retorno.error5("El tiempo debe ser mayor a 0");
+
+        CentroLogistico clOrigen = centrosLogisticos.obtenerCL(codigoOrigen);
+        CentroLogistico clDestino = centrosLogisticos.obtenerCL(codigoDestino);
+        if(centrosLogisticos.existeConexion(clOrigen, clDestino)){
+            return Retorno.error6("Ya existe una conexion entre estos centros logisticos");
+        }
+        centrosLogisticos.agregarConexion(clOrigen, clDestino, new Conexion(distancia, tiempo));
+
+        return Retorno.ok("Se agrego la conexion correctamente");
     }
 
     @Override

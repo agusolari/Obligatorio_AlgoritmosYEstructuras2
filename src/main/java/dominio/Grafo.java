@@ -66,6 +66,22 @@ public class Grafo {
         return posABuscar >= 0;
     }
 
+    public boolean existeConexion(CentroLogistico clInicial, CentroLogistico clFinal) {
+        int posVInicial = obtenerPos(clInicial);
+        int posVFinal = obtenerPos(clFinal);
+
+        return conexiones[posVInicial][posVFinal] != null;
+    }
+
+    public CentroLogistico obtenerCL(String codigo) {
+        for (CentroLogistico cl : centroLogisticos) {
+            if (cl != null && cl.getCodigo().equals(codigo)) {
+                return cl;
+            }
+        }
+        return null;
+    }
+
     //Recorridas
     public void dfs(CentroLogistico cl) {
         int posV = obtenerPos(cl);
