@@ -45,4 +45,9 @@ public class CentroLogistico {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
+
+    @Override
+    public String toString() {
+        return codigo + ";" + nombre + ";" + departamento + ";" + direccion;
+    }
 }

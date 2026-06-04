@@ -157,12 +157,28 @@ public class ImplementacionSistema implements Sistema  {
 
     @Override
     public Retorno redCentrosPorCantidadDeConexiones(String codigoOrigen, int cantidad) {
-        return Retorno.noImplementada();
+        
+        if(cantidad < 0) return Retorno.error1("La cantidad debe ser mayor o igual a 0");
+        
+        if (codigoOrigen == null || codigoOrigen.isBlank()) return Retorno.error2("El codigo es vacío o null");
+
+        if(!centrosLogisticos.existeCentroLogistico(new CentroLogistico(codigoOrigen, "", "", ""))) return Retorno.error3("El centro logístico de origen no existe");
+
+        return Retorno.ok(centrosLogisticos.bfsConTupla(codigoOrigen, cantidad));
     }
 
     @Override
     public Retorno viajeCostoMinimoDistancia(String codigoOrigen, String codigoDestino) {
-        return Retorno.noImplementada();
+        if (codigoOrigen == null || codigoOrigen.isBlank() || codigoDestino == null || codigoDestino.isBlank()) return Retorno.error1("Campos vacios o nulos");
+
+        if(!centrosLogisticos.existeCentroLogistico(new CentroLogistico(codigoOrigen, "", "", ""))) return Retorno.error2("El centro logístico de origen no existe");
+
+        if(!centrosLogisticos.existeCentroLogistico(new CentroLogistico(codigoDestino, "", "", ""))) return Retorno.error3("El centro logístico de destino no existe");
+
+        if (!centrosLogisticos.hayCamino(codigoOrigen, codigoDestino)) return Retorno.error4("No hay camino entre el origen y el destino");
+        
+        Tupla<Integer, String> resultado = centrosLogisticos.dijkstra(codigoOrigen, codigoDestino);
+        return Retorno.ok(resultado.getDato1(), resultado.getDato2());
     }
 
     @Override
