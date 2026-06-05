@@ -67,17 +67,13 @@ public class ABB<K extends Comparable<K>, T> {
         if (nodo == null) {
             return false;
         }
-
         int comparacion = clave.compareTo(nodo.clave);
-
         if (comparacion == 0) {
             return true;
         }
-
         if (comparacion < 0) {
             return existe(nodo.izq, clave);
         }
-
         return existe(nodo.der, clave);
     }
 
@@ -86,36 +82,29 @@ public class ABB<K extends Comparable<K>, T> {
     }
 
     private RespuestaBusqueda<T> buscar(NodoABB<K, T> nodo, K clave, int recorridos) {
-        // no encontrado
         if (nodo == null) {
             return new RespuestaBusqueda<>(null, recorridos);
         }
-
         // contamos este nodo
         recorridos++;
 
         int comparacion = clave.compareTo(nodo.clave);
-
         // encontrado
         if (comparacion == 0) {
             return new RespuestaBusqueda<>(nodo.dato, recorridos);
         }
-
-        // buscar izquierda
+        // buscamos a la izquierda
         if (comparacion < 0) {
             return buscar(nodo.izq, clave, recorridos);
         }
-
-        // buscar derecha
+        // buscamos a la derecha
         return buscar(nodo.der, clave, recorridos);
     }
 
     public String listarAscendente() {
 
         StringBuilder sb = new StringBuilder();
-
         listarAscendente(raiz, sb);
-
         return sb.toString();
     }
 
@@ -124,23 +113,17 @@ public class ABB<K extends Comparable<K>, T> {
         if (nodo == null) {
             return;
         }
-
         listarAscendente(nodo.izq, sb);
-
         if (!sb.isEmpty()) {
             sb.append("|");
         }
-
         sb.append(nodo.dato);
-
         listarAscendente(nodo.der, sb);
     }
 
     public String listarDescendente(){
         StringBuilder sb = new StringBuilder();
-
         listarDescendente(raiz, sb);
-
         return sb.toString();
 
     }
@@ -149,15 +132,12 @@ public class ABB<K extends Comparable<K>, T> {
         if (nodo == null){
             return;
         }
-
         listarDescendente(nodo.der, sb);
 
         if(!sb.isEmpty()){
             sb.append("|");
         }
-
         sb.append(nodo.dato);
-
         listarDescendente(nodo.izq, sb);
     }
 }

@@ -34,34 +34,11 @@ public class Grafo {
         }
     }
 
-    public void borrarCentroLogistico(CentroLogistico cl) {
-        int posABorrar = obtenerPos(cl);
-
-        for (int i = 0; i < conexiones.length; i++) {
-            conexiones[posABorrar][i] = null;
-            conexiones[i][posABorrar] = null;
-        }
-    }
-
     public void agregarConexion(CentroLogistico clInicial, CentroLogistico clFinal, Conexion conexion) {
         int posVInicial = obtenerPos(clInicial);
         int posVFinal = obtenerPos(clFinal);
 
         conexiones[posVInicial][posVFinal] = conexion;
-    }
-
-    public void borrarConexion(CentroLogistico clInicial, CentroLogistico clFinal) {
-        int posVInicial = obtenerPos(clInicial);
-        int posVFinal = obtenerPos(clFinal);
-
-        conexiones[posVInicial][posVFinal] = null;
-    }
-
-    public Conexion obtenerConexion(CentroLogistico clInicial, CentroLogistico clFinal) {
-        int posVInicial = obtenerPos(clInicial);
-        int posVFinal = obtenerPos(clFinal);
-
-        return conexiones[posVInicial][posVFinal];
     }
 
     public boolean existeCentroLogistico(CentroLogistico cl) {
@@ -107,23 +84,6 @@ public class Grafo {
         return false;
     }
 
-    //Recorridas
-    // public void dfs(CentroLogistico cl) {
-    //     int posV = obtenerPos(cl);
-    //     boolean[] visitados = new boolean[cantMaxVertices];
-    //     dfs(posV, visitados);
-    //     System.out.println();
-    // }
-
-    // private void dfs(int posV, boolean[] visitados) {
-    //     System.out.print(centroLogisticos[posV] + " ");
-    //     visitados[posV] = true;
-    //     for (int i = 0; i < conexiones.length; i++) {
-    //         if (conexiones[posV][i]!= null && !visitados[i]) {
-    //             dfs(i, visitados);
-    //         }
-    //     }
-    // }
 
     private int obtenerPosLibre() {
         for (int i = 0; i < centroLogisticos.length; i++) {
@@ -177,7 +137,7 @@ public class Grafo {
         return alcanzables.listarAscendente();
     }
 
-    public Tupla<Integer, String> dijkstra(String codOrigen, String codDestino) {
+    public Tupla<Integer, String> dijkstra(String codOrigen, String codDestino, boolean esTiempo) {
         int posCLSalida = obtenerPos(obtenerCL(codOrigen));
         int posCLLlegada = obtenerPos(obtenerCL(codDestino));
 
@@ -205,8 +165,9 @@ public class Grafo {
                 // 3) Para cada adyacente no visitado de posVertice
                 for (int j = 0; j < cantMaxVertices; j++) {
                     if (conexiones[posVertice][j] != null && !visitados[j]) {
-                        if (costos[j] > costos[posVertice] + conexiones[posVertice][j].distancia) {
-                            costos[j] = costos[posVertice] + conexiones[posVertice][j].distancia;
+                        int peso = esTiempo ? conexiones[posVertice][j].tiempo : conexiones[posVertice][j].distancia;
+                        if (costos[j] > costos[posVertice] + peso) {
+                            costos[j] = costos[posVertice] + peso;
                             vengo[j] = centroLogisticos[posVertice];
                         }
                     }

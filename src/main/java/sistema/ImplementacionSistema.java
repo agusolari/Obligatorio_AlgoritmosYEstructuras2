@@ -177,13 +177,23 @@ public class ImplementacionSistema implements Sistema  {
 
         if (!centrosLogisticos.hayCamino(codigoOrigen, codigoDestino)) return Retorno.error4("No hay camino entre el origen y el destino");
         
-        Tupla<Integer, String> resultado = centrosLogisticos.dijkstra(codigoOrigen, codigoDestino);
+        Tupla<Integer, String> resultado = centrosLogisticos.dijkstra(codigoOrigen, codigoDestino, false);
         return Retorno.ok(resultado.getDato1(), resultado.getDato2());
     }
 
     @Override
     public Retorno viajeCostoMinimoTiempo(String codigoOrigen, String codigoDestino) {
-        return Retorno.noImplementada();
+        if (codigoOrigen == null || codigoOrigen.isBlank() || codigoDestino == null || codigoDestino.isBlank()) return Retorno.error1("Campos vacios o nulos");
+
+        if(!centrosLogisticos.existeCentroLogistico(new CentroLogistico(codigoOrigen, "", "", ""))) return Retorno.error2("El centro logístico de origen no existe");
+
+        if(!centrosLogisticos.existeCentroLogistico(new CentroLogistico(codigoDestino, "", "", ""))) return Retorno.error3("El centro logístico de destino no existe");
+
+        if (!centrosLogisticos.hayCamino(codigoOrigen, codigoDestino)) return Retorno.error4("No hay camino entre el origen y el destino");
+
+
+        Tupla<Integer, String> resultado = centrosLogisticos.dijkstra(codigoOrigen, codigoDestino, true);
+        return Retorno.ok(resultado.getDato1(), resultado.getDato2());
     }
 
 

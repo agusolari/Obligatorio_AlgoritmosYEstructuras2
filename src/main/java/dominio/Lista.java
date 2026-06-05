@@ -15,24 +15,6 @@ public class Lista<T> implements ILista<T> {
         this.largo = 0;
     }
 
-    public void insertarAlFinal(T dato) {
-        NodoLista<T> nuevo = new NodoLista<>(dato);
-
-        if (inicio == null) {
-            inicio = nuevo;
-            largo++;
-            return;
-        }
-        NodoLista<T> aux = inicio;
-
-        while (aux.getSig() != null) {
-            aux = aux.getSig();
-        }
-        aux.setSig(nuevo);
-
-        largo++;
-    }
-
     public void insertarOrdenado(T dato) {
 
         NodoLista<T> nuevo = new NodoLista<>(dato);
@@ -67,56 +49,6 @@ public class Lista<T> implements ILista<T> {
     }
 
     @Override
-    public void insertar(T dato) {
-        inicio = new NodoLista<T>(dato, inicio);
-        largo++;
-    }
-
-    @Override
-    public void borrar(T dato) {
-
-    }
-
-    @Override
-    public int largo() {
-        return largo;
-    }
-
-    @Override
-    public boolean existe(T dato) {
-        NodoLista<T> aux = inicio;
-        while (aux != null) {
-            if (aux.getDato().equals(dato)) {
-                return true;
-            }
-            aux = aux.getSig();
-        }
-        return false;
-    }
-
-    @Override
-    public T recuperar(T dato) {
-        NodoLista<T> aux = inicio;
-        while (aux != null) {
-            if (aux.getDato().equals(dato)) {
-                return aux.getDato();
-            }
-            aux = aux.getSig();
-        }
-        return null;
-    }
-
-    @Override
-    public boolean esVacia() {
-        return largo == 0;
-    }
-
-    @Override
-    public boolean esLlena() {
-        return false;
-    }
-
-    @Override
     public String imprimirDatos() {
         return imprimirDatosV2(inicio);
     }
@@ -131,30 +63,6 @@ public class Lista<T> implements ILista<T> {
         return nodo.getDato().toString() + "|" +
                 imprimirDatosV2(nodo.getSig());
     }
-
-    public Iterator<T> iterator() {
-        return new Iterator<T>() {
-            private NodoLista<T> aux = inicio;
-
-            @Override
-            public boolean hasNext() {
-                return aux != null;
-            }
-
-            @Override
-            public T next() {
-                T dato = aux.dato;
-                aux = aux.sig;
-                return dato;
-            }
-
-            @Override
-            public void remove() {
-            }
-
-        };
-    }
-
 
     class NodoLista<T>{
         private T dato;
