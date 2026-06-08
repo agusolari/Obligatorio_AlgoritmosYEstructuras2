@@ -1,5 +1,9 @@
 package sistema;
 
+/*
+ * Estudiantes: [Agustin Solari - 318656], [Hernán Araujo - 324600]
+ */
+
 import dominio.*;
 import interfaz.*;
 

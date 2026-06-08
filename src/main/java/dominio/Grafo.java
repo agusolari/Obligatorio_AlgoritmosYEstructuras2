@@ -117,8 +117,8 @@ public class Grafo {
             int pos = tuplaV.getDato1();
             int dist = tuplaV.getDato2();
 
-            // Se agrega como alcanzable sin incluir el origen (dist 0) y respetando el límite de conexiones
-            if (dist > 0 && dist <= cantidad) {
+            // Se agrega como alcanzable incluyendo el origen (dist 0) y respetando el límite de conexiones
+            if (dist <= cantidad) {
                 CentroLogistico cl = centroLogisticos[pos];
                 alcanzables.insertar(cl.getCodigo(), cl);
             }

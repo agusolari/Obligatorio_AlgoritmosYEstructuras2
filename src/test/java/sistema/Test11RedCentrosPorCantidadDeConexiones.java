@@ -26,14 +26,14 @@ public class Test11RedCentrosPorCantidadDeConexiones {
     void redCentrosPorCantidadDeConexionesOK() {
         retorno = s.redCentrosPorCantidadDeConexiones("C001", 2);
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
-        assertEquals("C002;Centro 2;Canelones;Dir 2|" + "C003;Centro 3;Maldonado;Dir 3", retorno.getValorString());
+        assertEquals("C001;Centro 1;Montevideo;Dir 1|" + "C002;Centro 2;Canelones;Dir 2|" + "C003;Centro 3;Maldonado;Dir 3", retorno.getValorString());
     }
 
     @Test
     void redCentrosPorCantidadDeConexionesOKLimitaPorCantidad() {
         retorno = s.redCentrosPorCantidadDeConexiones("C001", 1);
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
-        assertEquals("C002;Centro 2;Canelones;Dir 2", retorno.getValorString());
+        assertEquals("C001;Centro 1;Montevideo;Dir 1|" + "C002;Centro 2;Canelones;Dir 2", retorno.getValorString());
     }
 
     @Test
